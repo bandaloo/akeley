@@ -1,35 +1,91 @@
 import * as THREE from "three";
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
+function makeInstance(
+  geometry: THREE.Geometry,
+  color: string | number | THREE.Color,
+  x: number = 0,
+  y: number = 0,
+  z: number = 0
+) {
+  const material = new THREE.MeshPhongMaterial({ color: color });
+  const instance = new THREE.Mesh(geometry, material);
+  instance.position.x = x;
+  instance.position.y = y;
+  instance.position.z = z;
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshPhongMaterial({ color: 0xff0000 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-
-camera.position.z = 5;
-
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(-1, 2, 4);
-scene.add(light);
-
-function animate() {
-  requestAnimationFrame(animate);
-
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-
-  renderer.render(scene, camera);
+  return instance;
 }
 
-animate();
+function main() {
+  // constants
+  const radius = 7;
+  const boxNum = 10;
+  const delta = 0.0001;
+  const planeScalar = 3.1;
+  const boxSize = 1;
+  const lightPos: [number, number, number] = [-1, 2, 3];
+
+  // create the scene
+  const scene = new THREE.Scene();
+
+  // create and set up camera
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.z = 15;
+  camera.position.y = 1;
+
+  const boxes: THREE.Mesh[] = [];
+
+  // create and set up render and add canvas
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  const cubeGeometry = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+
+  for (let i = 0; i < boxNum; i++) {
+    const angle = (i / boxNum) * 2 * Math.PI;
+    const cube = makeInstance(
+      cubeGeometry,
+      new THREE.Color(`hsl(${(i / boxNum) * 360}, 50%, 50%)`),
+      Math.sin(angle) * radius,
+      0,
+      Math.cos(angle) * radius
+    );
+    boxes.push(cube);
+    scene.add(cube);
+  }
+
+  const planeSize = planeScalar * radius;
+  const planeGeometry = new THREE.PlaneGeometry(planeSize, planeSize);
+
+  const plane = makeInstance(planeGeometry, 0xffffff, 0, -0.5 - delta, 0);
+  plane.rotation.x = -Math.PI / 2;
+  scene.add(plane);
+
+  // create and set up light
+  const light = new THREE.DirectionalLight(0xffffff, 1);
+  light.position.set(...lightPos);
+  scene.add(light);
+
+  const rotationSpeed = 0.001;
+  function animate(time: number) {
+    requestAnimationFrame(animate);
+    let num = 0;
+    for (const m of boxes) {
+      m.rotation.y = Math.sin(
+        rotationSpeed * time + (num / boxNum) * 2 * Math.PI
+      );
+      num++;
+    }
+    renderer.render(scene, camera);
+  }
+
+  animate(0);
+}
+
+main();

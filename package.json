@@ -1,0 +1,24 @@
+{
+  "name": "akeleycam",
+  "version": "0.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "three": "^0.117.1"
+  },
+  "devDependencies": {
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.1",
+    "typescript": "^4.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc --outDir dist",
+    "bundle": "npx browserify dist/example.js -o bundle.js",
+    "buildwatch": "npx tsc -w --outDir dist",
+    "bundlewatch": "npx watchify dist/example.js -o bundle.js"
+  },
+  "author": "Cole Granof",
+  "license": "ISC"
+}

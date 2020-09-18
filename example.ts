@@ -24,6 +24,7 @@ function main() {
   const planeScalar = 3.1;
   const boxSize = 1;
   const lightPos: [number, number, number] = [-1, 2, 3];
+  const rotationSpeed = 0.001;
 
   // create the scene
   const scene = new THREE.Scene();
@@ -72,8 +73,7 @@ function main() {
   light.position.set(...lightPos);
   scene.add(light);
 
-  const rotationSpeed = 0.001;
-  function animate(time: number) {
+  const animate = (time: number) => {
     requestAnimationFrame(animate);
     let num = 0;
     for (const m of boxes) {
@@ -83,7 +83,7 @@ function main() {
       num++;
     }
     renderer.render(scene, camera);
-  }
+  };
 
   animate(0);
 }

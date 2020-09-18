@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import { Akeley } from "./src/Akeley";
+import { move } from "./src/Segment";
 
 function makeInstance(
   geometry: THREE.Geometry,
@@ -17,9 +19,16 @@ function makeInstance(
 }
 
 function main() {
+  // camera path
+  const path = new Akeley([
+    move().from(0, 0, 0).to(-8, 5, 5).within(2000).like("linear"),
+    move().to(-3, 3, 3),
+    move().from(2, 2, 2),
+  ]);
+
   // constants
   const radius = 7;
-  const boxNum = 10;
+  const boxNum = 20;
   const delta = 0.0001;
   const planeScalar = 3.1;
   const boxSize = 1;
@@ -36,8 +45,6 @@ function main() {
     0.1,
     1000
   );
-  camera.position.z = 15;
-  camera.position.y = 1;
 
   const boxes: THREE.Mesh[] = [];
 
@@ -74,7 +81,6 @@ function main() {
   scene.add(light);
 
   const animate = (time: number) => {
-    requestAnimationFrame(animate);
     let num = 0;
     for (const m of boxes) {
       m.rotation.y = Math.sin(
@@ -83,6 +89,12 @@ function main() {
       num++;
     }
     renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+
+    const pos = path.pos(time);
+    camera.position.x = pos[0];
+    camera.position.y = pos[1];
+    camera.position.z = pos[2];
   };
 
   animate(0);

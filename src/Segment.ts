@@ -7,29 +7,28 @@ export class Segment {
   /** endpoint */
   end?: [number, number, number];
   /** interpolation style */
-  interp?: Interp;
+  interp: Interp = "linear";
   /** time for transition in ms */
-  time?: number;
+  time: number = 1000;
 
-  constructor();
-  constructor(x: number, y: number, z: number);
-  constructor(x?: number, y?: number, z?: number) {
-    // undefined start means use the endpoint of previous segment
-    if (x === undefined) return;
-    // y and z must be numbers as defined by the overload
-    this.start = [x, y as number, z as number];
+  constructor() {}
+
+  /** sets start point */
+  from(x: number, y: number, z: number) {
+    this.start = [x, y, z];
+    return this;
   }
 
   /** sets endpoint */
-  to(end: [number, number, number]) {
-    this.end = end;
+  to(x: number, y: number, z: number) {
+    this.end = [x, y, z];
     return this;
   }
 
   /** sets time length of the transition */
   within(time: number) {
     this.time = time;
-    return time;
+    return this;
   }
 
   /** sets interpolation style */
@@ -40,6 +39,6 @@ export class Segment {
 }
 
 /** creates a new [[Segment]] */
-function move(x: number, y: number, z: number) {
-  return new Segment(x, y, z);
+export function move() {
+  return new Segment();
 }

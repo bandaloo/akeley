@@ -39,6 +39,6 @@ export class Segment {
 }
 
 /** creates a new [[Segment]] */
-export function move() {
-  return new Segment();
+export function lerp() {
+  return new Segment().like("linear");
 }

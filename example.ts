@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Akeley } from "./src/Akeley";
-import { move } from "./src/Segment";
+import { lerp } from "./src/Segment";
 
 function makeInstance(
   geometry: THREE.Geometry,
@@ -21,9 +21,9 @@ function makeInstance(
 function main() {
   // camera path
   const path = new Akeley([
-    move().from(0, 0, 0).to(-8, 5, 5).within(2000).like("linear"),
-    move().to(-3, 3, 3),
-    move().from(2, 2, 2),
+    lerp().to(-4, 0, 0).within(2000),
+    lerp().to(0, 4, 0),
+    lerp().to(0, 0, 4),
   ]);
 
   // constants
@@ -100,4 +100,5 @@ function main() {
   animate(0);
 }
 
+console.log("testing reverse time");
 main();

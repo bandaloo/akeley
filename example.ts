@@ -100,5 +100,4 @@ function main() {
   animate(0);
 }
 
-console.log("testing reverse time");
 main();

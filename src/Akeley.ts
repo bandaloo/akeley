@@ -16,12 +16,15 @@ export class Akeley {
   // TODO fix for backwards time
   pos(time: number): TupleVec3 {
     // advance index until segment is correct for current time
+    const sign = Math.sign(time - this.prevTime);
+    console.log(sign);
     while (
-      time < this.prevSegmentsTime ||
-      time > this.prevSegmentsTime + this.segments[this.currIndex].time
+      sign !== 0 &&
+      (time < this.prevSegmentsTime ||
+        time > this.prevSegmentsTime + this.segments[this.currIndex].time)
     ) {
-      this.prevSegmentsTime += this.segments[this.currIndex].time;
-      this.currIndex = mod(this.currIndex + 1, this.segments.length);
+      this.prevSegmentsTime += this.segments[this.currIndex].time * sign;
+      this.currIndex = mod(this.currIndex + sign, this.segments.length);
     }
 
     const curr = time - this.prevSegmentsTime;
@@ -43,6 +46,8 @@ export class Akeley {
 
     if (end === undefined)
       throw new Error("end is undefined and prev segment start is undefined");
+
+    this.prevTime = time;
 
     return mix(start, end, tween);
   }

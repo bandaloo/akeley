@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Akeley } from "./src/Akeley";
-import { lerp } from "./src/Segment";
+import { lerp, spline } from "./src/Segment";
 
 function makeInstance(
   geometry: THREE.Geometry,
@@ -20,10 +20,21 @@ function makeInstance(
 
 function main() {
   // camera path
+  /*
   const path = new Akeley([
     lerp().to(-4, 0, 0).within(2000),
     lerp().to(0, 4, 0),
     lerp().to(0, 0, 4),
+  ]);
+  */
+
+  const path = new Akeley([
+    ...spline([
+      [1, 1, 9],
+      [2, 3, 9],
+      [3, 9, 9],
+      [4, 2, 9],
+    ]),
   ]);
 
   // constants

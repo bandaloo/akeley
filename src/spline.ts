@@ -22,7 +22,7 @@
 export function getCurvePoints(
   points: number[],
   tension = 0.5,
-  numOfSeg = 10,
+  numOfSeg = 20,
   close = false
 ) {
   let pts; // for cloning point array

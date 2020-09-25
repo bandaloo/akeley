@@ -13,7 +13,6 @@ export class Akeley {
     this.segments = segments;
   }
 
-  // TODO fix for backwards time
   pos(time: number): TupleVec3 {
     // advance index until segment is correct for current time
     // advancing will not happen if sign is 0 (time stopped)

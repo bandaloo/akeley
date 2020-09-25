@@ -29,12 +29,17 @@ function main() {
   */
 
   const path = new Akeley([
-    ...spline([
-      [1, 1, 9],
-      [2, 3, 9],
-      [3, 9, 9],
-      [4, 2, 9],
-    ]),
+    ...spline(
+      [
+        [1, 1, 9],
+        [2, 3, 9],
+        [3, 9, 3],
+        [4, 2, 9],
+      ],
+      8000,
+      { close: false }
+    ),
+    lerp().to(2, 2, 2),
   ]);
 
   // constants

@@ -49,7 +49,7 @@ export function lerp() {
 interface SplineOptions {
   tension?: number;
   numOfSeg?: number;
-  close?: boolean;
+  kind?: "closed" | "from" | "to" | "capped";
 }
 
 export function spline(
@@ -61,7 +61,7 @@ export function spline(
     points.flat(),
     options.tension,
     options.numOfSeg,
-    options.close
+    options.kind === "closed"
   );
   const curve: TupleVec3[] = [];
   for (let i = 0; i < s.length; i += 3) {
@@ -70,18 +70,19 @@ export function spline(
 
   // TODO closed or not closed segments will be different
   // slice off last element if closed
+  const time = within / (curve.length - 1);
   const ret = curve.map((p) =>
-    new Segment().within(within / (curve.length - 1)).from(...p)
+    options.kind === "to"
+      ? new Segment().within(time).to(...p)
+      : new Segment().within(time).from(...p)
   );
 
   // remove the last element so the loop doesn't pause, but we want to keep the
   // last element if we intend to cut
-  const popped = ret.pop();
-  if (popped === undefined) throw new Error("pop returned undefined");
-
-  if (!options.close) {
-    if (popped.start === undefined)
-      throw new Error("popped poitn somehow doesn't have start");
+  if (options.kind === "closed" || options.kind === "capped") {
+    const popped = ret.pop();
+    if (popped?.start === undefined)
+      throw new Error("popped or start undefined");
     ret[ret.length - 1].to(...popped.start);
   }
 

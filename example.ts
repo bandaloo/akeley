@@ -35,11 +35,13 @@ function main() {
         [2, 3, 9],
         [3, 9, 3],
         [4, 2, 9],
+        [2, 9, 1],
       ],
       8000,
-      { close: false }
+      { kind: "closed", tension: 1 }
     ),
-    lerp().to(2, 2, 2),
+    //lerp().to(3, 3, 3),
+    //lerp().from(3, 3, 3),
   ]);
 
   // constants

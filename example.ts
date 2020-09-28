@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Akeley } from "./src/Akeley";
+import { Path } from "./src/Akeley";
 import { lerp, spline } from "./src/Segment";
 
 function makeInstance(
@@ -28,7 +28,7 @@ function main() {
   ]);
   */
 
-  const path = new Akeley([
+  const path = new Path([
     ...spline(
       [
         [1, 1, 9],

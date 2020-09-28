@@ -1,7 +1,7 @@
 import { Segment } from "./Segment";
 import { mix, mod, TupleVec3 } from "./utils";
 
-export class Akeley {
+export class Path {
   segments: Segment[] = [];
 
   private prevTime = 0;

@@ -1,10 +1,11 @@
-import { getCurvePoints } from "./spline";
-import { TupleVec3 } from "./utils";
+import { Movement } from "./Movement";
+import { getCurvePoints } from "./curvepoints";
+import { mix, TupleVec3 } from "./utils";
 
 export type Interp = "linear";
 
 /** part of a path */
-export class Segment {
+export class Segment extends Movement {
   /** starting point */
   start?: TupleVec3;
   /** endpoint */
@@ -13,8 +14,6 @@ export class Segment {
   interp: Interp = "linear";
   /** time for transition in ms */
   time: number = 1000;
-
-  constructor() {}
 
   /** sets start point */
   from(x: number, y: number, z: number) {
@@ -38,6 +37,10 @@ export class Segment {
   like(interp: Interp) {
     this.interp = interp;
     return this;
+  }
+
+  pos(start: TupleVec3, end: TupleVec3, tween: number) {
+    return mix(start, end, tween);
   }
 }
 

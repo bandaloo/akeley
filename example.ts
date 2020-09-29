@@ -34,7 +34,8 @@ function main() {
     new Polyline()
       .from(1, 1, 1)
       .to(4, 4, 4)
-      .between([2, 3, 2], [3, 2, 3])
+      .between([2, 2, 2], [3, 3, 3])
+      .within(8000)
       .close(),
   ]);
 

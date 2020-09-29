@@ -7,26 +7,6 @@ export type Interp = "linear";
 export class Segment extends Movement {
   /** interpolation style */
   interp: Interp = "linear";
-  /** time for transition in ms */
-  time: number = 1000;
-
-  /** sets start point */
-  from(x: number, y: number, z: number) {
-    this.start = [x, y, z];
-    return this;
-  }
-
-  /** sets endpoint */
-  to(x: number, y: number, z: number) {
-    this.end = [x, y, z];
-    return this;
-  }
-
-  /** sets time length of the transition */
-  within(time: number) {
-    this.time = time;
-    return this;
-  }
 
   /** sets interpolation style */
   like(interp: Interp) {
@@ -44,11 +24,13 @@ export function lerp() {
   return new Segment().like("linear");
 }
 
+/*
 interface SplineOptions {
   tension?: number;
   numOfSeg?: number;
   kind?: "closed" | "from" | "to" | "capped";
 }
+*/
 
 /*
 export function spline(

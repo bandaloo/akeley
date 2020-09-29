@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Path } from "./src/Akeley";
 import { Polyline } from "./src/Polyline";
 import { lerp } from "./src/Segment";
+import { catmullRomPoint } from "./src/utils";
 
 function makeInstance(
   geometry: THREE.Geometry,
@@ -21,10 +22,20 @@ function makeInstance(
 
 function main() {
   // camera path
+  /*
   const path = new Path([
     lerp().to(-4, 0, 0).within(2000),
     lerp().to(0, 4, 0),
     lerp().to(0, 0, 4),
+  ]);
+  */
+
+  const path = new Path([
+    new Polyline()
+      .from(1, 1, 1)
+      .to(4, 4, 4)
+      .between([2, 3, 2], [3, 2, 3])
+      .close(),
   ]);
 
   // constants
@@ -102,7 +113,7 @@ function main() {
 }
 
 console.log(
-  Polyline.catmullRomPoint(
+  catmullRomPoint(
     [
       [0, 0, 0],
       [1, 1, 0],

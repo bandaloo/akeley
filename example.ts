@@ -30,13 +30,21 @@ function main() {
   ]);
   */
 
+  /*
   const path = new Path([
     new Polyline()
       .from(1, 1, 1)
       .to(4, 4, 4)
-      .between([2, 2, 2], [3, 3, 3])
-      .within(8000)
-      .close(),
+      .between([2, 3, 2], [3, 2, 3])
+      .within(8000),
+  ]);
+  */
+
+  const path = new Path([
+    new Polyline()
+      .entering(1, 1, 1)
+      .between([2, 3, 2], [3, 2, 3], [4, 4, 4])
+      .within(8000),
   ]);
 
   // constants

@@ -12,14 +12,17 @@ export class Polyline extends Movement {
     return this;
   }
 
-  close() {
+  entering(x: number, y: number, z: number) {
+    this.start = [x, y, z];
+    this.end = [x, y, z];
     this.closed = true;
     return this;
   }
 
   pos(start: Vec<3>, end: Vec<3>, tween: number): Vec<3> {
     if (this.controls.length < 2) throw new Error("not enough between points");
-    const points = [start, ...this.controls, end];
+    const points = [start, ...this.controls];
+    if (!this.closed) points.push(end);
     const l = points.length;
     const f = (i: number) => (this.closed ? mod(i, l) : clamp(i, 0, l - 1));
     const i1 = Math.floor(tween * l);

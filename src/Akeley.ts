@@ -1,5 +1,5 @@
 import { Segment } from "./Segment";
-import { mix, mod, TupleVec3 } from "./utils";
+import { mix, mod, Vec } from "./utils";
 
 export class Path {
   segments: Segment[] = [];
@@ -13,7 +13,7 @@ export class Path {
     this.segments = segments;
   }
 
-  pos(time: number): TupleVec3 {
+  pos(time: number): Vec<3>{
     // advance index until segment is correct for current time
     // advancing will not happen if sign is 0 (time stopped)
     const sign = Math.sign(time - this.prevTime);
@@ -33,7 +33,7 @@ export class Path {
     const tween = (1 - (next - curr) / next) * sign;
 
     // use previous segment endpoint as start if undefined
-    const start: TupleVec3 | undefined =
+    const start: Vec<3> | undefined =
       this.segments[this.currIndex].start ??
       this.segments[mod(this.currIndex - sign, this.segments.length)].end;
 
@@ -41,7 +41,7 @@ export class Path {
       throw new Error("start is undefined and prev segment end is undefined");
 
     // use next segment start point if end is undefined
-    const end: TupleVec3 | undefined =
+    const end: Vec<3> | undefined =
       this.segments[this.currIndex].end ??
       this.segments[mod(this.currIndex + sign, this.segments.length)].start;
 

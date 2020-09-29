@@ -1,14 +1,14 @@
-export type TupleVec2 = [number, number];
-export type TupleVec3 = [number, number, number];
-export type TupleVec4 = [number, number, number, number];
-export type TupleVec = TupleVec2 | TupleVec3 | TupleVec4;
+export interface Vec<L extends number> extends Array<number> {
+  0: number;
+  length: L;
+}
 
-// utility functions
-export function mix<T extends TupleVec2>(a: T, b: T, num: number): TupleVec2;
-export function mix<T extends TupleVec3>(a: T, b: T, num: number): TupleVec3;
-export function mix<T extends TupleVec4>(a: T, b: T, num: number): TupleVec4;
-export function mix<T extends TupleVec>(a: T, b: T, num: number): T {
+export function mix<T extends Vec<number>>(a: T, b: T, num: number): T {
   return a.map((n, i) => n + (b[i] - n) * num) as T;
+}
+
+export function mult<T extends Vec<number>>(s: number, v: T): T {
+  return v.map((n) => n * s) as T;
 }
 
 export function mod(n: number, m: number) {

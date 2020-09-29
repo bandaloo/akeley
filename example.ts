@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Path } from "./src/Akeley";
-import { lerp, spline } from "./src/Segment";
+import { Polyline } from "./src/Polyline";
+import { lerp } from "./src/Segment";
 
 function makeInstance(
   geometry: THREE.Geometry,
@@ -20,28 +21,10 @@ function makeInstance(
 
 function main() {
   // camera path
-  /*
-  const path = new Akeley([
+  const path = new Path([
     lerp().to(-4, 0, 0).within(2000),
     lerp().to(0, 4, 0),
     lerp().to(0, 0, 4),
-  ]);
-  */
-
-  const path = new Path([
-    ...spline(
-      [
-        [1, 1, 9],
-        [2, 3, 9],
-        [3, 9, 3],
-        [4, 2, 9],
-        [2, 9, 1],
-      ],
-      8000,
-      { kind: "closed", tension: 1 }
-    ),
-    //lerp().to(3, 3, 3),
-    //lerp().from(3, 3, 3),
   ]);
 
   // constants
@@ -118,4 +101,15 @@ function main() {
   animate(0);
 }
 
+console.log(
+  Polyline.catmullRomPoint(
+    [
+      [0, 0, 0],
+      [1, 1, 0],
+      [1, 2, 0],
+      [0, 3, 0],
+    ],
+    0.5
+  )
+);
 main();

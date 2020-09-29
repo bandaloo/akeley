@@ -1,5 +1,4 @@
 import { Movement } from "./Movement";
-import { getCurvePoints } from "./curvepoints";
 import { mix, Vec } from "./utils";
 
 export type Interp = "linear";
@@ -51,6 +50,7 @@ interface SplineOptions {
   kind?: "closed" | "from" | "to" | "capped";
 }
 
+/*
 export function spline(
   points: Vec<3>[],
   within = 8000,
@@ -87,3 +87,4 @@ export function spline(
 
   return ret;
 }
+*/

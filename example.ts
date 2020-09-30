@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { Path } from "./src/Akeley";
 import { Polyline } from "./src/Polyline";
 import { lerp } from "./src/Segment";
-import { catmullRomPoint } from "./src/utils";
+import { add, catmullRomPoint } from "./src/utils";
 
 function makeInstance(
   geometry: THREE.Geometry,
@@ -42,8 +42,8 @@ function main() {
 
   const path = new Path([
     new Polyline()
-      .entering(1, 1, 1)
-      .between([2, 3, 2], [3, 2, 3], [4, 4, 4])
+      .entering(0, 0, 0)
+      .between([1, 0, 0], [1, 0, 1], [-1, 0, 1], [-1, 0, 0])
       .within(8000),
   ]);
 
@@ -112,10 +112,12 @@ function main() {
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 
-    const pos = path.pos(time);
+    const { pos, dir } = path.orientation(time);
     camera.position.x = pos[0];
     camera.position.y = pos[1];
     camera.position.z = pos[2];
+    const look = add(pos, dir);
+    camera.lookAt(look[0], look[1], look[2]);
   };
 
   animate(0);

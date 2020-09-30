@@ -35,11 +35,9 @@ export function length<T extends Vec<number>>(a: T): number {
   return Math.sqrt(a.reduce((acc, curr) => (acc + curr) ** 2));
 }
 
-/*
 export function norm<T extends Vec<number>>(a: T): T {
-  return div(length(a));
+  return div(a, length(a));
 }
-*/
 
 export function mod(n: number, m: number) {
   return ((n % m) + m) % m;

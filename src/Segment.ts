@@ -1,5 +1,5 @@
 import { Movement } from "./Movement";
-import { mix, Vec } from "./utils";
+import { mix, norm, sub, Vec } from "./utils";
 
 export type Interp = "linear";
 
@@ -20,7 +20,7 @@ export class Segment extends Movement {
 
   dir(start: Vec<3>, end: Vec<3>, tween: number): Vec<3> {
     // TODO complete this
-    return [0, 0, 0];
+    return norm(sub(end, start));
   }
 }
 

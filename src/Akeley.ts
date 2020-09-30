@@ -1,6 +1,11 @@
 import { Movement } from "./Movement";
 import { mix, mod, Vec } from "./utils";
 
+interface Orientation {
+  pos: Vec<3>;
+  dir: Vec<3>;
+}
+
 export class Path {
   movements: Movement[] = [];
 
@@ -13,7 +18,8 @@ export class Path {
     this.movements = movements;
   }
 
-  pos(time: number): Vec<3> {
+  // TODO fix for 0 time
+  orientation(time: number, pos = true): Orientation {
     // advance index until segment is correct for current time
     // advancing will not happen if sign is 0 (time stopped)
     const sign = Math.sign(time - this.prevTime);
@@ -50,7 +56,10 @@ export class Path {
 
     this.prevTime = time;
 
-    return this.movements[this.currIndex].pos(start, end, tween);
+    return {
+      pos: this.movements[this.currIndex].pos(start, end, tween),
+      dir: this.movements[this.currIndex].dir(start, end, tween),
+    };
   }
 }
 

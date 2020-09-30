@@ -33,4 +33,9 @@ export class Polyline extends Movement {
     const t = (tween % (1 / l)) * l;
     return catmullRomPoint([p0, p1, p2, p3], t);
   }
+
+  dir(start: Vec<3>, end: Vec<3>, tween: number): Vec<3> {
+    // TODO complete this
+    return [0, 0, 0];
+  }
 }

@@ -27,4 +27,6 @@ export abstract class Movement {
   }
 
   abstract pos(start: Vec<3>, end: Vec<3>, tween: number): Vec<3>;
+
+  abstract dir(start: Vec<3>, end: Vec<3>, tween: number): Vec<3>;
 }

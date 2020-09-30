@@ -17,6 +17,11 @@ export class Segment extends Movement {
   pos(start: Vec<3>, end: Vec<3>, tween: number) {
     return mix(start, end, tween);
   }
+
+  dir(start: Vec<3>, end: Vec<3>, tween: number): Vec<3> {
+    // TODO complete this
+    return [0, 0, 0];
+  }
 }
 
 /** creates a new [[Segment]] */

@@ -36,7 +36,6 @@ export class Polyline extends Movement {
     const p2 = points[f(i1 + 1)];
     const p3 = points[f(i1 + 2)];
     const t = (tween % (1 / l)) * l;
-    console.log(pos, t);
     return pos
       ? catmullRomPoint([p0, p1, p2, p3], t)
       : catmullRomGrad([p0, p1, p2, p3], t);

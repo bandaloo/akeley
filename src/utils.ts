@@ -3,6 +3,11 @@ export interface Vec<L extends number> extends Array<number> {
   length: L;
 }
 
+export interface Mat<L extends number> extends Array<Vec<L>> {
+  0: Vec<L>;
+  length: L;
+}
+
 export function mix<T extends Vec<number>>(a: T, b: T, num: number): T {
   return a.map((n, i) => n + (b[i] - n) * num) as T;
 }
@@ -32,11 +37,40 @@ export function sub<T extends Vec<number>>(a: T, b: T | number): T {
 }
 
 export function length<T extends Vec<number>>(a: T): number {
-  return Math.sqrt(a.reduce((acc, curr) => (acc + curr) ** 2));
+  return Math.sqrt(a.reduce((acc, curr) => acc + curr ** 2, 0));
 }
 
 export function norm<T extends Vec<number>>(a: T): T {
-  return div(a, length(a));
+  const l = length(a);
+  if (l === 0) throw new Error("cannot normalize zero vector");
+  return div(a, l);
+}
+
+export function dot<T extends Vec<number>>(a: T, b: T): number {
+  return a.reduce((acc, curr, i) => acc + curr * b[i], 0);
+}
+
+// https://www.geertarien.com/blog/2017/07/30/breakdown-of-the-lookAt-function-in-OpenGL/
+export function lookAt(eye: Vec<3>, at: Vec<3>, up: Vec<3>): Mat<4> {
+  let z = norm(sub(at, eye));
+  const x = norm(cross(z, up));
+  const y = cross(x, z);
+  //console.log("inputs", eye, at, up);
+  //console.log("lookat", x, y, z);
+  z = mult(z, -1); // invert
+  return [
+    [x[0], x[1], x[2], -dot(x, eye)],
+    [y[0], y[1], y[2], -dot(y, eye)],
+    [z[0], z[1], z[2], -dot(z, eye)],
+    [0, 0, 0, 1],
+  ];
+}
+
+// TODO also add scalar cross product
+export function cross(a: Vec<3>, b: Vec<3>): Vec<3> {
+  const [a1, a2, a3] = a;
+  const [b1, b2, b3] = b;
+  return [a2 * b3 - a3 * b2, a3 * b1 - a1 * b3, a1 * b2 - a2 * b1];
 }
 
 export function mod(n: number, m: number) {

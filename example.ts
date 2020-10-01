@@ -1,8 +1,9 @@
 import * as THREE from "three";
+import { Matrix4 } from "three";
 import { Path } from "./src/Akeley";
 import { Polyline } from "./src/Polyline";
 import { lerp } from "./src/Segment";
-import { add, catmullRomPoint } from "./src/utils";
+import { add, catmullRomPoint, lookAt } from "./src/utils";
 
 function makeInstance(
   geometry: THREE.Geometry,
@@ -66,6 +67,8 @@ function main() {
     0.1,
     1000
   );
+  // TODO get rid of this!!
+  camera.matrixAutoUpdate = false;
 
   const boxes: THREE.Mesh[] = [];
 
@@ -109,20 +112,54 @@ function main() {
       );
       num++;
     }
+
+    const { pos, dir } = path.orientation(-time);
+    //camera.position.x = pos[0];
+    //camera.position.y = pos[1];
+    //camera.position.z = pos[2];
+    const look = add(pos, dir);
+    //camera.lookAt(look[0], look[1], look[2]);
+
+    /*
+    console.log(
+      "rotation",
+      camera.rotation.x,
+      camera.rotation.y,
+      camera.rotation.z
+    );
+    */
+    const m = lookAt(pos, look, [0, 1, 0]);
+    camera.matrix.set(
+      m[0][0],
+      m[0][1],
+      m[0][2],
+      m[0][3],
+      m[1][0],
+      m[1][1],
+      m[1][2],
+      m[1][3],
+      m[2][0],
+      m[2][1],
+      m[2][2],
+      m[2][3],
+      m[3][0],
+      m[3][1],
+      m[3][2],
+      m[3][3]
+    );
+    //console.log("m", m);
+    //console.log("world", camera.matrixWorld);
+    //console.log("inverse", camera.matrixWorldInverse);
+    camera.matrixAutoUpdate = false;
+    camera.matrixWorldNeedsUpdate = true;
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
-
-    const { pos, dir } = path.orientation(time);
-    camera.position.x = pos[0];
-    camera.position.y = pos[1];
-    camera.position.z = pos[2];
-    const look = add(pos, dir);
-    camera.lookAt(look[0], look[1], look[2]);
   };
 
   animate(0);
 }
 
+/*
 console.log(
   catmullRomPoint(
     [
@@ -134,4 +171,5 @@ console.log(
     0.5
   )
 );
+*/
 main();
